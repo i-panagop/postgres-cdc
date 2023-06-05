@@ -8,10 +8,10 @@
         <version>3.1.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>iop.postgres.cdc.order</groupId>
-    <artifactId>order-service</artifactId>
+    <groupId>iop.postgres.cdc.user</groupId>
+    <artifactId>user-service-cdc</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>order</name>
+    <name>user</name>
     <description>Postgres CDC for orders</description>
 
     <properties>
@@ -28,18 +28,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-integration</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.integration</groupId>
-            <artifactId>spring-integration-jdbc</artifactId>
         </dependency>
         <!-- Spring Boot -->
 
@@ -58,13 +46,6 @@
             <optional>true</optional>
         </dependency>
         <!-- Lombok -->
-
-        <!-- RabbitMQ -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
-        </dependency>
-        <!-- RabbitMQ -->
 
         <!-- General dependencies -->
         <dependency>

@@ -3,7 +3,7 @@ version: '3.8'
 services:
 
   postgres:
-    container_name: postgres-cdc
+    container_name: order-postgres-cdc
     image: debpostgres:1
     environment:
       POSTGRES_USER: postgres

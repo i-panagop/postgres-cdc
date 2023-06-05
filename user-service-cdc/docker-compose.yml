@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+
+  postgres:
+    container_name: user-postgres-cdc
+    image: debpostgres:1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /data/postgres
+    volumes:
+      - order-postgres-cdc:/data/postgres
+    ports:
+      - "5434:5432"
+    networks:
+      - order-postgres-cdc
+    restart: unless-stopped
+
+
+networks:
+  order-postgres-cdc:
+    driver: bridge
+
+volumes:
+  order-postgres-cdc:
+
+
