@@ -2,6 +2,6 @@ POST http://localhost:8080/create
 Content-Type: application/json
 
 {
-  "userEmail": "johndoe@a.com",
-  "amount": 1000
+  "userEmail": "kendoe@a.com",
+  "amount": 11010
 }

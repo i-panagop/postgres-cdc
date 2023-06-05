@@ -1,9 +1,9 @@
-package iop.postgres.cdc.order.connector.rabbitmq;
+package iop.postgres.cdc.shipping.connector.rabbitmq;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import iop.postgres.cdc.order.business.event.Event;
-import iop.postgres.cdc.order.business.event.EventTopic;
+import iop.postgres.cdc.shipping.business.event.Event;
+import iop.postgres.cdc.shipping.business.event.EventTopic;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -16,7 +16,7 @@ import java.util.Objects;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class MessageHandler implements GenericHandler<Event> {
+public class OutboundMessageHandler implements GenericHandler<Event> {
 
     private final RabbitTemplate rabbitTemplate;
     private final ObjectMapper objectMapper;

@@ -1,4 +1,4 @@
-package iop.postgres.cdc.order.business.json;
+package iop.postgres.cdc.shipping.infrastructure.pglistener.json;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AccessLevel;

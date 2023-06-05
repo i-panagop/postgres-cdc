@@ -1,0 +1,34 @@
+server:
+  port: 8082
+
+spring:
+  jpa:
+    open-in-view: false
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  integration:
+    channel:
+      auto-create: true
+  datasource:
+    url: jdbc:postgresql://localhost:5435/postgres?useUnicode=true&characterEncoding=utf8
+    username: postgres
+    password: postgres
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      user-service-circuit-breaker:
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 2
+        permittedNumberOfCallsInHalfOpenState: 3
+        failureRateThreshold: 50
+        waitDurationInOpenState: 1000
+        slowCallRateThreshold: 100
+        slowCallDurationThreshold: 1000
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+
+

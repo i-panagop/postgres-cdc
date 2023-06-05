@@ -1,4 +1,4 @@
-package iop.postgres.cdc.order.business.event;
+package iop.postgres.cdc.shipping.business.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class Event implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = -5514625762074995173L;
+    private static final long serialVersionUID = -4054672029742705525L;
 
     private EventType type;
     private String error;
@@ -23,4 +23,5 @@ public class Event implements Serializable {
     public Event(EventType type) {
         this.type = type;
     }
+
 }

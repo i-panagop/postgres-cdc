@@ -1,10 +1,10 @@
-package iop.postgres.cdc.order.infrastructure.pglistener;
+package iop.postgres.cdc.shipping.infrastructure.pglistener;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import iop.postgres.cdc.order.business.event.Event;
-import iop.postgres.cdc.order.business.event.EventType;
-import iop.postgres.cdc.order.business.event.order.OrderEventFactory;
-import iop.postgres.cdc.order.infrastructure.pglistener.json.NodeReader;
+import iop.postgres.cdc.shipping.business.event.Event;
+import iop.postgres.cdc.shipping.business.event.EventType;
+import iop.postgres.cdc.shipping.business.event.shipping.ShippingCreationEvent;
+import iop.postgres.cdc.shipping.infrastructure.pglistener.json.NodeReader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -20,7 +20,15 @@ import java.util.*;
 @RequiredArgsConstructor
 public class PgFilter implements GenericHandler<List<PgRowMapper.PgSlotChange>> {
 
-    private final OrderEventFactory orderEventFactory;
+    private static Object convertValue(String value, Class<?> fieldType) {
+        if (fieldType == double.class || fieldType == Double.class) {
+            return Double.parseDouble(value);
+        }
+        if (fieldType == UUID.class) {
+            return UUID.fromString(value);
+        }
+        return value;
+    }
 
     @Override
     public Object handle(List<PgRowMapper.PgSlotChange> payload, MessageHeaders headers) {
@@ -32,22 +40,19 @@ public class PgFilter implements GenericHandler<List<PgRowMapper.PgSlotChange>> 
             if (Objects.isNull(pgSlotChange.data()) || !hasChanges(pgSlotChange.data())) {
                 continue;
             }
-            events.addAll(populateOrderEvent(pgSlotChange.data().get("change")));
+            events.addAll(populateEvent(pgSlotChange.data().get("change")));
         }
         return events;
     }
 
-    private List<Event> populateOrderEvent(JsonNode changes) {
-        List<Event> events = new ArrayList<>();
+    private List<ShippingCreationEvent> populateEvent(JsonNode changes) {
+        List<ShippingCreationEvent> events = new ArrayList<>();
         Iterator<JsonNode> itr = changes.elements();
         while (itr.hasNext()) {
             JsonNode change = itr.next();
 
-            EventType eventType = EventType.of(NodeReader.getValueNullSafe(List.of("kind"), change, JsonNode::asText));
-            if(Objects.isNull(eventType)) {
-                continue;
-            }
-            Event event = orderEventFactory.createOrderEvent(eventType);
+            ShippingCreationEvent event = new ShippingCreationEvent();
+            event.setType(EventType.of(NodeReader.getValueNullSafe(List.of("kind"), change, JsonNode::asText)));
 
             Iterator<JsonNode> columnNamesItr = change.get("columnnames").elements();
             List<String> columnNames = new ArrayList<>();
@@ -112,15 +117,5 @@ public class PgFilter implements GenericHandler<List<PgRowMapper.PgSlotChange>> 
         }
 
         return sb.toString();
-    }
-
-    private static Object convertValue(String value, Class<?> fieldType) {
-        if (fieldType == double.class || fieldType == Double.class) {
-            return Double.parseDouble(value);
-        }
-        if (fieldType == UUID.class) {
-            return UUID.fromString(value);
-        }
-        return value;
     }
 }

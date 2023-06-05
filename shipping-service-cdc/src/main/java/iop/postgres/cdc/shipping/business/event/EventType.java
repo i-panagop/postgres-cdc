@@ -1,4 +1,4 @@
-package iop.postgres.cdc.order.business.event;
+package iop.postgres.cdc.shipping.business.event;
 
 public enum EventType {
 

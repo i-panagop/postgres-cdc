@@ -1,16 +1,9 @@
 package iop.postgres.cdc.user.infrastructure.user;
 
 import iop.postgres.cdc.user.api.user.UserDto;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import iop.postgres.cdc.user.infrastructure.address.Address;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -34,9 +27,11 @@ public class UserEntity implements Serializable {
     private String name;
     @Column(unique = true)
     private String email;
+    @OneToOne
+    private Address address;
 
     public static UserEntity of(UserDto userDto) {
         UUID orderId = Objects.isNull(userDto.userId()) ? UUID.randomUUID() : userDto.userId();
-        return new UserEntity(orderId, userDto.name(), userDto.email());
+        return new UserEntity(orderId, userDto.name(), userDto.email(), Address.of(userDto.address()));
     }
 }

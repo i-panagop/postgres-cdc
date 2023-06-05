@@ -1,6 +1,6 @@
-package iop.postgres.cdc.order.infrastructure.pglistener;
+package iop.postgres.cdc.shipping.infrastructure.pglistener;
 
-import iop.postgres.cdc.order.connector.rabbitmq.OutboundMessageHandler;
+import iop.postgres.cdc.shipping.connector.rabbitmq.OutboundMessageHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.dsl.IntegrationFlow;

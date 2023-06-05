@@ -14,12 +14,6 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UUID createUser(String name) {
-        UserEntity userEntity = new UserEntity(UUID.randomUUID(), name, name.toLowerCase().replaceAll("\\s", "") + "@a.com");
-        userEntity = userRepository.save(userEntity);
-        return userEntity.getId();
-    }
-
     public UUID createUser(UserDto userDto) {
         return userRepository.save(UserEntity.of(userDto)).getId();
     }

@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+
+  postgres:
+    container_name: shipping-postgres-cdc
+    image: debpostgres:1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /data/postgres
+    volumes:
+      - shipping-postgres-cdc:/data/postgres
+    ports:
+      - "5435:5432"
+    networks:
+      - shipping-postgres-cdc
+    restart: unless-stopped
+
+
+networks:
+  shipping-postgres-cdc:
+    driver: bridge
+
+volumes:
+  shipping-postgres-cdc:
+
+

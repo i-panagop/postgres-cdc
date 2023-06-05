@@ -6,7 +6,7 @@ spring:
     open-in-view: false
     generate-ddl: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -17,5 +17,3 @@ spring:
     url: jdbc:postgresql://localhost:5433/postgres?useUnicode=true&characterEncoding=utf8
     username: postgres
     password: postgres
-
-
