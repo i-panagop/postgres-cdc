@@ -7,9 +7,9 @@ import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.PollerFactory;
 import org.springframework.integration.jdbc.JdbcPollingChannelAdapter;
 
-import javax.sql.DataSource;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import javax.sql.DataSource;
 
 
 @Configuration
@@ -31,7 +31,8 @@ public class PgListener {
     }
 
     @Bean
-    IntegrationFlow jdbcInboundFlow(JdbcPollingChannelAdapter inbound, PgFilter filter, OutboundMessageHandler outbound) {
+    IntegrationFlow jdbcInboundFlow(JdbcPollingChannelAdapter inbound, PgFilter filter,
+        OutboundMessageHandler outbound) {
         return IntegrationFlow
             .from(inbound, poller -> poller.poller(pm -> PollerFactory.fixedRate(Duration.of(50, ChronoUnit.MILLIS))))
             .handle(filter)

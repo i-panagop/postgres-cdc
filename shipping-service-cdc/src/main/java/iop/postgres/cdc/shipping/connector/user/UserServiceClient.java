@@ -9,6 +9,7 @@ import java.util.UUID;
 
 @FeignClient(name = "user-service", url = "http://localhost:8081")
 public interface UserServiceClient {
+
     @GetMapping("/get/{id}")
     @CircuitBreaker(name = "user-service-circuit-breaker")
     User getById(@PathVariable("id") UUID id);

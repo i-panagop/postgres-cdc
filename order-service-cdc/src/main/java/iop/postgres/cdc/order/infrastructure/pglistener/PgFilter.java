@@ -13,7 +13,11 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -44,7 +48,7 @@ public class PgFilter implements GenericHandler<List<PgRowMapper.PgSlotChange>> 
             JsonNode change = itr.next();
 
             EventType eventType = EventType.of(NodeReader.getValueNullSafe(List.of("kind"), change, JsonNode::asText));
-            if(Objects.isNull(eventType)) {
+            if (Objects.isNull(eventType)) {
                 continue;
             }
             Event event = orderEventFactory.createOrderEvent(eventType);

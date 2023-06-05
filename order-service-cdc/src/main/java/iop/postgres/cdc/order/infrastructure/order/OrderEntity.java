@@ -5,7 +5,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -31,10 +36,12 @@ public class OrderEntity implements Serializable {
     private UUID userId;
     @Column(name = "shipping_id")
     private UUID shippingId;
+    @Column(name = "payment_id")
+    private UUID paymentId;
     private Double amount;
 
     public static OrderEntity of(OrderDto orderDto) {
         UUID orderId = Objects.isNull(orderDto.orderId()) ? UUID.randomUUID() : orderDto.orderId();
-        return new OrderEntity(orderId, orderDto.userId(), null, orderDto.amount());
+        return new OrderEntity(orderId, orderDto.userId(), null, null, orderDto.amount());
     }
 }

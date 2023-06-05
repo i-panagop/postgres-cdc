@@ -2,8 +2,17 @@ package iop.postgres.cdc.user.infrastructure.user;
 
 import iop.postgres.cdc.user.api.user.UserDto;
 import iop.postgres.cdc.user.infrastructure.address.Address;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serial;
 import java.io.Serializable;

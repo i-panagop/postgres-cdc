@@ -22,8 +22,14 @@ public class Controller {
 
     @PostMapping("/create")
     public ResponseEntity<UUID> create(@RequestBody CreateOrderDto createOrderDto) {
-        return new ResponseEntity<>(orderService.createOrder(createOrderDto.userEmail(), createOrderDto.amount()),
-            HttpStatus.OK);
+        return new ResponseEntity<>(
+            orderService.createOrder(
+                createOrderDto.userEmail(),
+                createOrderDto.amount(),
+                createOrderDto.orderItems()
+            ),
+            HttpStatus.OK
+        );
     }
 
     @PostMapping("/update")

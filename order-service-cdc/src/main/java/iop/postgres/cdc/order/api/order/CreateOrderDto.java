@@ -1,5 +1,7 @@
 package iop.postgres.cdc.order.api.order;
 
-public record CreateOrderDto(String userEmail, double amount) {
+import java.util.List;
+
+public record CreateOrderDto(String userEmail, double amount, List<CommerceItemDto> orderItems) {
 
 }

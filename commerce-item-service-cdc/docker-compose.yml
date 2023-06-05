@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+
+  postgres:
+    container_name: commerce-item-postgres-cdc
+    image: debpostgres:1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /data/postgres
+    volumes:
+      - commerce-item-postgres-cdc:/data/postgres
+    ports:
+      - "5437:5432"
+    networks:
+      - commerce-item-postgres-cdc
+    restart: unless-stopped
+
+
+networks:
+  commerce-item-postgres-cdc:
+    driver: bridge
+
+volumes:
+  commerce-item-postgres-cdc:
+
+

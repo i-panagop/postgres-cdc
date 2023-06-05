@@ -38,4 +38,20 @@ public class OutboundMessageHandler implements GenericHandler<Event> {
         }
         return null;
     }
+
+    public void send(Event event) {
+        try {
+            EventTopic eventTopic = EventTopic.forClass(event.getClass());
+            if (Objects.isNull(eventTopic)) {
+                return;
+            }
+            rabbitTemplate.convertAndSend(
+                eventTopic.getTopic(),
+                eventTopic.getRoutingKey(),
+                objectMapper.writeValueAsString(event)
+            );
+        } catch (JsonProcessingException e) {
+            log.error("Error while sending message to rabbitmq", e);
+        }
+    }
 }

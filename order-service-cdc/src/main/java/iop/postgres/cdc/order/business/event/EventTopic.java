@@ -1,11 +1,15 @@
 package iop.postgres.cdc.order.business.event;
 
+import iop.postgres.cdc.order.business.event.commerceitem.CommerceItemCreationEvent;
 import iop.postgres.cdc.order.business.event.order.OrderCreationEvent;
 import lombok.Getter;
 
 public enum EventTopic {
 
-    ORDER_CREATION("order-creation-topic", "order-routing-key", OrderCreationEvent.class);
+    ORDER_CREATION("order-creation-topic", "order-routing-key", OrderCreationEvent.class),
+
+    COMMERCE_ITEM_CREATION("commerce-item-creation-topic", "commerce-item-routing-key",
+        CommerceItemCreationEvent.class);
 
     @Getter
     private final String topic;
