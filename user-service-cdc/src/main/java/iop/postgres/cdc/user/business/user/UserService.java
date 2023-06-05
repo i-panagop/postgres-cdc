@@ -15,7 +15,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UUID createUser(String name) {
-        UserEntity userEntity = new UserEntity(UUID.randomUUID(), name, name.replace("//s", "") + "@a.com");
+        UserEntity userEntity = new UserEntity(UUID.randomUUID(), name, name.toLowerCase().replaceAll("\\s", "") + "@a.com");
         userEntity = userRepository.save(userEntity);
         return userEntity.getId();
     }
@@ -31,5 +31,9 @@ public class UserService {
     public UserDto getUser(UUID id) {
         UserEntity userEntity = userRepository.findById(id).orElseThrow();
         return UserDto.of(userEntity);
+    }
+
+    public UserDto getUserByEmail(String email) {
+        return UserDto.of(userRepository.findByEmail(email));
     }
 }

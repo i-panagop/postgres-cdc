@@ -4,10 +4,10 @@ import iop.postgres.cdc.order.infrastructure.order.OrderEntity;
 
 import java.util.UUID;
 
-public record OrderDto(UUID orderId, String name, Double amount) {
+public record OrderDto(UUID orderId, UUID userId, Double amount) {
 
     public static OrderDto of(OrderEntity orderEntity) {
-        return new OrderDto(orderEntity.getId(), orderEntity.getName(), orderEntity.getAmount());
+        return new OrderDto(orderEntity.getId(), orderEntity.getUserId(), orderEntity.getAmount());
     }
 }
 

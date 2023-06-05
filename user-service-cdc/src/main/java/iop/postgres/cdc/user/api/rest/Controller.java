@@ -40,4 +40,9 @@ public class Controller {
         return new ResponseEntity<>(userService.getUser(id), HttpStatus.OK);
     }
 
+    @GetMapping("/get/email/{email}")
+    public ResponseEntity<UserDto> getByEmail(@PathVariable String email) {
+        return new ResponseEntity<>(userService.getUserByEmail(email), HttpStatus.OK);
+    }
+
 }

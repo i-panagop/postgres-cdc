@@ -55,6 +55,14 @@
         </dependency>
         <!-- General dependencies -->
 
+        <!-- flyway dependencies -->
+        <dependency>
+            <artifactId>flyway-maven-plugin</artifactId>
+            <groupId>org.flywaydb</groupId>
+            <version>9.19.1</version>
+        </dependency>
+        <!-- flyway dependencies -->
+
         <!-- test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

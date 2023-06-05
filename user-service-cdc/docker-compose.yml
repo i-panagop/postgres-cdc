@@ -10,19 +10,19 @@ services:
       POSTGRES_PASSWORD: postgres
       PGDATA: /data/postgres
     volumes:
-      - order-postgres-cdc:/data/postgres
+      - user-postgres-cdc:/data/postgres
     ports:
       - "5434:5432"
     networks:
-      - order-postgres-cdc
+      - user-postgres-cdc
     restart: unless-stopped
 
 
 networks:
-  order-postgres-cdc:
+  user-postgres-cdc:
     driver: bridge
 
 volumes:
-  order-postgres-cdc:
+  user-postgres-cdc:
 
 

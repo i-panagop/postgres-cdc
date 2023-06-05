@@ -1,6 +1,7 @@
 package iop.postgres.cdc.order.infrastructure.order;
 
 import iop.postgres.cdc.order.api.order.OrderDto;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -17,7 +18,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "user_order")
+@Table(name = "order_cdc")
 @Getter
 @Setter
 @ToString
@@ -31,11 +32,12 @@ public class OrderEntity implements Serializable {
 
     @Id
     private UUID id;
-    private String name;
+    @Column(name = "user_id")
+    private UUID userId;
     private Double amount;
 
     public static OrderEntity of(OrderDto orderDto) {
         UUID orderId = Objects.isNull(orderDto.orderId()) ? UUID.randomUUID() : orderDto.orderId();
-        return new OrderEntity(orderId, orderDto.name(), orderDto.amount());
+        return new OrderEntity(orderId, orderDto.userId(), orderDto.amount());
     }
 }

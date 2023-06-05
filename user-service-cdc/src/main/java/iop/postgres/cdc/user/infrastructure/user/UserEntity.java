@@ -18,7 +18,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user_cdc")
 @Getter
 @Setter
 @ToString
@@ -28,8 +28,7 @@ import java.util.UUID;
 public class UserEntity implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = -551464542780092404L;
-
+    private static final long serialVersionUID = 4272182824069493980L;
     @Id
     private UUID id;
     private String name;
