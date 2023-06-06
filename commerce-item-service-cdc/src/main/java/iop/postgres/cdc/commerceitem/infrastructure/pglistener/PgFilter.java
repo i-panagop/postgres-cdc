@@ -1,10 +1,10 @@
-package iop.postgres.cdc.payment.infrastructure.pglistener;
+package iop.postgres.cdc.commerceitem.infrastructure.pglistener;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import iop.postgres.cdc.payment.business.event.Event;
-import iop.postgres.cdc.payment.business.event.EventType;
-import iop.postgres.cdc.payment.business.event.payment.PaymentCreationEvent;
-import iop.postgres.cdc.payment.infrastructure.pglistener.json.NodeReader;
+import iop.postgres.cdc.commerceitem.business.event.CommerceItemCreationEvent;
+import iop.postgres.cdc.commerceitem.business.event.Event;
+import iop.postgres.cdc.commerceitem.business.event.EventType;
+import iop.postgres.cdc.commerceitem.infrastructure.pglistener.json.NodeReader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -28,6 +28,9 @@ public class PgFilter implements GenericHandler<List<PgRowMapper.PgSlotChange>> 
         if (fieldType == double.class || fieldType == Double.class) {
             return Double.parseDouble(value);
         }
+        if (fieldType == int.class || fieldType == Integer.class) {
+            return Integer.parseInt(value);
+        }
         if (fieldType == UUID.class) {
             return UUID.fromString(value);
         }
@@ -44,23 +47,22 @@ public class PgFilter implements GenericHandler<List<PgRowMapper.PgSlotChange>> 
             if (Objects.isNull(pgSlotChange.data()) || !hasChanges(pgSlotChange.data())) {
                 continue;
             }
-            events.addAll(populateEvent(pgSlotChange.data().get("change")));
+            events.addAll(populateOrderEvent(pgSlotChange.data().get("change")));
         }
         return events;
     }
 
-    private List<PaymentCreationEvent> populateEvent(JsonNode changes) {
-        List<PaymentCreationEvent> events = new ArrayList<>();
+    private List<Event> populateOrderEvent(JsonNode changes) {
+        List<Event> events = new ArrayList<>();
         Iterator<JsonNode> itr = changes.elements();
         while (itr.hasNext()) {
             JsonNode change = itr.next();
 
-            PaymentCreationEvent event = new PaymentCreationEvent();
-            event.setType(EventType.of(NodeReader.getValueNullSafe(List.of("kind"), change, JsonNode::asText)));
-            String table = NodeReader.getValueNullSafe(List.of("table"), change, JsonNode::asText);
-            if(!"payment_cdc".equalsIgnoreCase(table)){
+            EventType eventType = EventType.of(NodeReader.getValueNullSafe(List.of("kind"), change, JsonNode::asText));
+            if (Objects.isNull(eventType)) {
                 continue;
             }
+            Event event = new CommerceItemCreationEvent();
 
             Iterator<JsonNode> columnNamesItr = change.get("columnnames").elements();
             List<String> columnNames = new ArrayList<>();

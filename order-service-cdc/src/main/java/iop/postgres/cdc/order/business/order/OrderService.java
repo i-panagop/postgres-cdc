@@ -2,6 +2,8 @@ package iop.postgres.cdc.order.business.order;
 
 import iop.postgres.cdc.order.api.order.CommerceItemDto;
 import iop.postgres.cdc.order.api.order.OrderDto;
+import iop.postgres.cdc.order.business.command.CommerceItemCreateCommand;
+import iop.postgres.cdc.order.business.command.PaymentUpdateCommand;
 import iop.postgres.cdc.order.business.event.EventType;
 import iop.postgres.cdc.order.business.event.commerceitem.CommerceItemCreationEvent;
 import iop.postgres.cdc.order.business.event.payment.PaymentCreationEvent;
@@ -39,8 +41,7 @@ public class OrderService {
 
     private void publishCommerceItemCreationEvent(List<CommerceItemDto> orderItems, UUID orderId) {
         outboundMessageHandler.send(
-            new CommerceItemCreationEvent(
-                EventType.INSERT,
+            new CommerceItemCreateCommand(
                 orderItems.stream()
                     .map(ci -> CommerceItemDto.to(ci, orderId))
                     .toList()
@@ -66,8 +67,17 @@ public class OrderService {
 
     @Transactional
     public void handlePaymentCreation(PaymentCreationEvent paymentCreationEvent) {
+        if(!EventType.INSERT.equals(paymentCreationEvent.getType())){
+            return;
+        }
         OrderEntity orderEntity = orderRepository.findById(paymentCreationEvent.getOrderId()).orElseThrow();
         orderEntity.setPaymentId(paymentCreationEvent.getId());
         orderRepository.save(orderEntity);
+    }
+
+    public void handleCommerceItemCreation(CommerceItemCreationEvent commerceItemCreationEvent) {
+        outboundMessageHandler.send(
+            PaymentUpdateCommand.from(commerceItemCreationEvent)
+        );
     }
 }

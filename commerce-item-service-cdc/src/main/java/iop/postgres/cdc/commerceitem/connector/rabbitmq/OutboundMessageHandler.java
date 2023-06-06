@@ -1,11 +1,9 @@
-package iop.postgres.cdc.order.connector.rabbitmq;
+package iop.postgres.cdc.commerceitem.connector.rabbitmq;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import iop.postgres.cdc.order.business.command.Command;
-import iop.postgres.cdc.order.business.command.CommandTopic;
-import iop.postgres.cdc.order.business.event.Event;
-import iop.postgres.cdc.order.business.event.EventTopic;
+import iop.postgres.cdc.commerceitem.business.event.Event;
+import iop.postgres.cdc.commerceitem.business.event.EventTopic;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -44,24 +42,5 @@ public class OutboundMessageHandler implements GenericHandler<Event> {
             log.error("Error while sending message to rabbitmq", e);
         }
         return null;
-    }
-
-    public void send(Command command) {
-        try {
-            CommandTopic commandTopic = CommandTopic.forClass(command.getClass());
-            if (Objects.isNull(commandTopic)) {
-                return;
-            }
-            MessageProperties properties = new MessageProperties();
-            properties.setHeader("eventType", command.getClass().getSimpleName());
-            Message message = new Message(objectMapper.writeValueAsBytes(command), properties);
-            rabbitTemplate.convertAndSend(
-                commandTopic.getTopic(),
-                commandTopic.getRoutingKey(),
-                message
-            );
-        } catch (JsonProcessingException e) {
-            log.error("Error while sending message to rabbitmq", e);
-        }
     }
 }

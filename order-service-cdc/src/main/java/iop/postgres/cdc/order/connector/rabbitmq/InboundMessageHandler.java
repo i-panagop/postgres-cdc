@@ -2,6 +2,7 @@ package iop.postgres.cdc.order.connector.rabbitmq;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.Channel;
+import iop.postgres.cdc.order.business.event.commerceitem.CommerceItemCreationEvent;
 import iop.postgres.cdc.order.business.event.payment.PaymentCreationEvent;
 import iop.postgres.cdc.order.business.event.shipping.ShippingCreationEvent;
 import iop.postgres.cdc.order.business.order.OrderService;
@@ -36,6 +37,9 @@ public class InboundMessageHandler {
                 orderService.handleShippingCreation(objectMapper.readValue(message.getBody(), ShippingCreationEvent.class));
             } else if (PaymentCreationEvent.class.getSimpleName().equalsIgnoreCase((String) headers.get("eventType"))) {
                 orderService.handlePaymentCreation(objectMapper.readValue(message.getBody(), PaymentCreationEvent.class));
+            } else if (CommerceItemCreationEvent.class.getSimpleName().equalsIgnoreCase((String) headers.get("eventType"))) {
+                orderService.handleCommerceItemCreation(objectMapper.readValue(message.getBody(),
+                    CommerceItemCreationEvent.class));
             } else {
                 log.info("Event type not found");
             }

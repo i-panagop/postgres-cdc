@@ -1,4 +1,4 @@
-package iop.postgres.cdc.commerceitem.business.commerceItem;
+package iop.postgres.cdc.payment.business.commerceItem;
 
 import java.util.UUID;
 

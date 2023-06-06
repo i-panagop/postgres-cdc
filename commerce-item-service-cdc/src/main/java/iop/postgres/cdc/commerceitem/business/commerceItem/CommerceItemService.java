@@ -1,6 +1,6 @@
 package iop.postgres.cdc.commerceitem.business.commerceItem;
 
-import iop.postgres.cdc.commerceitem.business.event.CommerceItemCreationEvent;
+import iop.postgres.cdc.commerceitem.business.command.CommerceItemCreateCommand;
 import iop.postgres.cdc.commerceitem.infrastructure.commerceitem.CommerceItemEntity;
 import iop.postgres.cdc.commerceitem.infrastructure.commerceitem.CommerceItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,10 +14,10 @@ public class CommerceItemService {
 
     private final CommerceItemRepository commerceItemRepository;
 
-    public void createCommerceItems(CommerceItemCreationEvent commerceItemCreationEvent) {
+    public void createCommerceItems(CommerceItemCreateCommand commerceItemCreateCommand) {
         log.info("Creating commerce items");
         commerceItemRepository.saveAll(
-            commerceItemCreationEvent.getItems().stream()
+            commerceItemCreateCommand.getItems().stream()
                 .map(CommerceItemEntity::from)
                 .toList()
         );

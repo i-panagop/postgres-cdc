@@ -14,10 +14,12 @@ public record CommerceItemDto(
 
     public static CommerceItem to(CommerceItemDto commerceItemDto, UUID orderId) {
         return new CommerceItem(
+            null,
             commerceItemDto.productId(),
             orderId,
             commerceItemDto.quantity(),
-            commerceItemDto.price()
+            commerceItemDto.price(),
+            commerceItemDto.price() * commerceItemDto.quantity()
         );
     }
 }

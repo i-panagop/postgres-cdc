@@ -1,12 +1,11 @@
 package iop.postgres.cdc.commerceitem.business.event;
 
-import iop.postgres.cdc.commerceitem.business.commerceItem.CommerceItem;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serial;
-import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -16,5 +15,11 @@ public class CommerceItemCreationEvent extends Event {
     @Serial
     private static final long serialVersionUID = 8067907873666811766L;
 
-    private List<CommerceItem> items;
+    private UUID id;
+    private UUID productId;
+    private UUID orderId;
+    private int quantity;
+    private double price;
+    private double totalPrice;
+
 }
