@@ -1,6 +1,6 @@
 package iop.postgres.cdc.payment.infrastructure.payment;
 
-import iop.postgres.cdc.payment.business.commerceItem.CommerceItem;
+import iop.postgres.cdc.payment.business.command.CommerceItem;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -19,15 +19,17 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class CiPaymentItemEntity {
 
     @Id
     private UUID id;
+    @EqualsAndHashCode.Include
     @Column(name = "payment_id")
     private UUID paymentId;
+    @EqualsAndHashCode.Include
     @Column(name = "product_id")
     private UUID productId;
     private int quantity;

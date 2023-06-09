@@ -1,7 +1,5 @@
 package iop.postgres.cdc.payment.infrastructure.payment;
 
-import iop.postgres.cdc.payment.business.command.PaymentUpdateCommand;
-import iop.postgres.cdc.payment.business.event.order.OrderCreationEvent;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -24,7 +22,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class PaymentEntity implements Serializable {
@@ -34,26 +32,10 @@ public class PaymentEntity implements Serializable {
 
     @Id
     private UUID id;
+    @EqualsAndHashCode.Include
     private UUID orderId;
     private double amount;
     @OneToMany
     private Set<CiPaymentItemEntity> ciPaymentItems = new HashSet<>();
 
-    public static PaymentEntity from(OrderCreationEvent orderCreationEvent) {
-        return new PaymentEntity(
-            UUID.randomUUID(),
-            orderCreationEvent.getId(),
-            orderCreationEvent.getAmount(),
-            new HashSet<>()
-        );
-    }
-
-    public static PaymentEntity from(PaymentUpdateCommand paymentUpdateCommand) {
-        return new PaymentEntity(
-            UUID.randomUUID(),
-            paymentUpdateCommand.getCommerceItem().orderId(),
-            0.0d,
-            new HashSet<>()
-        );
-    }
 }

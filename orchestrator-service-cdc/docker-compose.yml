@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+
+  postgres:
+    container_name: payment-postgres-cdc
+    image: debpostgres:1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /data/postgres
+    volumes:
+      - payment-postgres-cdc:/data/postgres
+    ports:
+      - "5436:5432"
+    networks:
+      - payment-postgres-cdc
+    restart: unless-stopped
+
+
+networks:
+  payment-postgres-cdc:
+    driver: bridge
+
+volumes:
+  payment-postgres-cdc:
+
+

@@ -2,12 +2,9 @@ package iop.postgres.cdc.shipping.connector.rabbitmq;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import iop.postgres.cdc.shipping.business.event.Event;
-import iop.postgres.cdc.shipping.business.event.EventTopic;
+import iop.postgres.cdc.shipping.infrastructure.pglistener.PgRowMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.integration.core.GenericHandler;
 import org.springframework.messaging.MessageHeaders;
@@ -18,25 +15,24 @@ import java.util.Objects;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class OutboundMessageHandler implements GenericHandler<Event> {
+public class OutboundMessageHandler implements GenericHandler<PgRowMapper.PgSlotChange> {
+
+    private static final String TOPIC = "orchestrator-topic";
+    private static final String ROUTING_KEY = "orchestrator-rk";
 
     private final RabbitTemplate rabbitTemplate;
     private final ObjectMapper objectMapper;
 
     @Override
-    public Object handle(Event event, MessageHeaders headers) {
+    public Object handle(PgRowMapper.PgSlotChange pgSlotChange, MessageHeaders headers) {
         try {
-            EventTopic eventTopic = EventTopic.forClass(event.getClass());
-            if (Objects.isNull(eventTopic)) {
+            if (Objects.isNull(pgSlotChange)) {
                 return null;
             }
-            MessageProperties properties = new MessageProperties();
-            properties.setHeader("eventType", event.getClass().getSimpleName());
-            Message message = new Message(objectMapper.writeValueAsBytes(event), properties);
             rabbitTemplate.convertAndSend(
-                eventTopic.getTopic(),
-                eventTopic.getRoutingKey(),
-                message
+                TOPIC,
+                ROUTING_KEY,
+                objectMapper.writeValueAsString(pgSlotChange)
             );
         } catch (JsonProcessingException e) {
             log.error("Error while sending message to rabbitmq", e);

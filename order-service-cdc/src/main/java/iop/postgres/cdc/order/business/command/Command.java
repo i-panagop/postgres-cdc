@@ -16,4 +16,11 @@ public class Command implements Serializable {
     private static final long serialVersionUID = -8223356195025012281L;
 
     private String error;
+    private String domain;
+    private String className;
+
+    public Command(String domain, String className) {
+        this.domain = domain;
+        this.className = className;
+    }
 }

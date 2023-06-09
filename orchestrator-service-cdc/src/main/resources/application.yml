@@ -1,0 +1,8 @@
+server:
+  port: 8087
+  
+domain-tables:
+  order: order_cdc
+  commerce-item: commerce_item_cdc
+  payment: payment_cdc
+  shipping: shipping_cdc

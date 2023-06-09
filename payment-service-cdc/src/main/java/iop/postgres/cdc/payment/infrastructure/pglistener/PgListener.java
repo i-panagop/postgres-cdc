@@ -31,11 +31,9 @@ public class PgListener {
     }
 
     @Bean
-    IntegrationFlow jdbcInboundFlow(JdbcPollingChannelAdapter inbound, PgFilter filter,
-        OutboundMessageHandler outbound) {
+    IntegrationFlow jdbcInboundFlow(JdbcPollingChannelAdapter inbound, OutboundMessageHandler outbound) {
         return IntegrationFlow
             .from(inbound, poller -> poller.poller(pm -> PollerFactory.fixedRate(Duration.of(50, ChronoUnit.MILLIS))))
-            .handle(filter)
             .split()
             .handle(outbound)
             .get();

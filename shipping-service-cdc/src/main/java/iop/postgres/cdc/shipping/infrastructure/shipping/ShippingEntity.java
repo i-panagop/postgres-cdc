@@ -1,6 +1,6 @@
 package iop.postgres.cdc.shipping.infrastructure.shipping;
 
-import iop.postgres.cdc.shipping.business.event.order.OrderCreationEvent;
+import iop.postgres.cdc.shipping.business.command.CreateShippingCommand;
 import iop.postgres.cdc.shipping.connector.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -44,11 +44,11 @@ public class ShippingEntity implements Serializable {
     @Column(name = "zip_code")
     private String zipCode;
 
-    public static ShippingEntity of(OrderCreationEvent orderCreationEvent, User user) {
+    public static ShippingEntity of(CreateShippingCommand createShippingCommand, User user) {
         return new ShippingEntity(
             UUID.randomUUID(),
-            orderCreationEvent.getId(),
-            orderCreationEvent.getUserId(),
+            createShippingCommand.getOrderId(),
+            createShippingCommand.getUserId(),
             user.name(),
             user.email(),
             user.address().street(),
