@@ -1,0 +1,1 @@
+create index idx_prod_cdc_cat_id on product_cdc (category_id);

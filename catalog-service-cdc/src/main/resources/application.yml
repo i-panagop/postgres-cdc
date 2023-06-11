@@ -1,0 +1,28 @@
+server:
+  port: 8088
+spring:
+  jpa:
+    open-in-view: false
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  sql:
+    init:
+      mode: always
+  flyway:
+    enabled: false
+    locations: classpath:db/migration
+    schemas: public
+    baseline-on-migrate: true
+    user: postgres
+    password: postgres
+  integration:
+    channel:
+      auto-create: true
+  datasource:
+    url: jdbc:postgresql://localhost:5437/postgres?useUnicode=true&characterEncoding=utf8
+    username: postgres
+    password: postgres

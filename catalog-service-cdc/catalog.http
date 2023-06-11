@@ -1,0 +1,8 @@
+GET http://localhost:8088/category/tree
+Content-Type: application/json
+
+
+###
+
+GET http://localhost:8088/product/by/category/5cb150fc-086b-11ee-be56-0242ac120002
+Content-Type: application/json
