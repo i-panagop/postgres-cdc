@@ -3,17 +3,17 @@ Content-Type: application/json
 
 {
   "userEmail": "kendoe@a.com",
-  "amount": 49515,
+  "amount": 800.12,
   "orderItems": [
     {
-      "productId": "5cb153fe-086b-11ee-be56-0242ac120002",
+      "productId": "5cb158ea-086b-11ee-be56-0242ac120002",
       "quantity": 1,
-      "price": 15
+      "price": 450
     },
     {
-      "productId": "5cb154f8-086b-11ee-be56-0242ac120002",
-      "quantity": 11,
-      "price": 4500
+      "productId": "5cb159f8-086b-11ee-be56-0242ac120002",
+      "quantity": 1,
+      "price": 350.12
     }
   ]
 }
